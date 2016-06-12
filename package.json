@@ -1,8 +1,8 @@
 {
   "name": "atmo-gen-expressjs-es5",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ES5 based express js generator for Atmo",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
