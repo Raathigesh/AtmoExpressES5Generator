@@ -1,13 +1,21 @@
 {
   "name": "atmo-gen-expressjs-es5",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "ES5 based express js generator for Atmo",
   "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Raathigesh/AtmoExpressES5Generator.git"
+  },
+  "author": "Raathigeshan Kugarajan",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Raathigesh/AtmoExpressES5Generator/issues"
+  },
+  "homepage": "https://github.com/Raathigesh/AtmoExpressES5Generator",
   "dependencies": {
     "mustache": "^2.2.1"
   }
