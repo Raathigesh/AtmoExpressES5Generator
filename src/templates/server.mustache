@@ -1,0 +1,38 @@
+var express = require('express');
+var app = express();
+var http = require('http');
+var server = http.createServer(app);
+{{#isSocketEndpointAvailable}}
+var io = require('socket.io')(server);
+{{/isSocketEndpointAvailable}}
+var port = 5555;
+
+app.get('/status', function internalStaus(req, res){
+	res.send('API server running.');
+});
+
+{{#endpoints}}
+app.{{httpMethod}}('{{{url}}}', function(req, res){
+     {{#headers}}
+      res.set('{{key}}', '{{value}}');
+     {{/headers}}
+      res.set('Content-Type', '{{{response.contentType.contentType}}}');
+      res.status({{response.responseCode}});
+      res.send('{{{response.content}}}');
+});
+{{/endpoints}}
+
+{{#isSocketEndpointAvailable}}
+io.on('connection', function(socket) {
+{{#socketEndpoints}}
+	socket.on('{{eventName}}', function(data) {    
+        socket.emit('{{eventToEmit}}', {{{payload}}});
+    });
+{{/socketEndpoints}}
+});
+{{/isSocketEndpointAvailable}}
+
+server.listen(port, function () {
+    console.log('API is available at: http://localhost:' + port);
+});
+
