@@ -1,4 +1,4 @@
-# Express JS generator for Atmo
+# Express JS & ES5 generator for Atmo
 An express js generator for [Atmo](https://github.com/Raathigesh/Atmo). It generates the code in ES5. This generator comes pre-installed with [Atmo](https://github.com/Raathigesh/Atmo).
 
 ## How to install it?
