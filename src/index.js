@@ -10,8 +10,10 @@ function generate(spec) {
   createProjectDirectory();
   spec = addHttpEndpointNames(spec);
   spec = addSocketEndpointFlag(spec);
+  spec = addSocketEmitTypeFlag(spec);
+  spec = isProxyEndpointAvailable(spec);
   writeFileSync('server.mustache', spec, 'server.js');
-  writeFileSync('package.mustache', {}, 'package.json');
+  writeFileSync('package.mustache', spec, 'package.json');
 }
 
 /**
@@ -41,6 +43,29 @@ function addHttpEndpointNames(spec) {
 function addSocketEndpointFlag(spec) {
   if (spec.socketEndpoints.length > 0) {
     spec.isSocketEndpointAvailable = true;
+  }
+  return spec;
+}
+
+/**
+ * Adds flags depending on the socket emit type
+ */
+function addSocketEmitTypeFlag(spec) {
+  for(var i = 0; i < spec.socketEndpoints.length; i++) {
+    var endpoint = spec.socketEndpoints[i];
+    endpoint.isEmitSelf = endpoint.emitType === "self";
+    endpoint.isEmitAll = endpoint.emitType === "all";
+    endpoint.isEmitBroadcast = endpoint.emitType === "broadcast";
+  }
+  return spec;
+}
+
+/**
+ * Adds a flag denoting weather any proxy endpoint is available in the spec
+ */
+function isProxyEndpointAvailable(spec) {
+  if (spec.proxyEndpoints.length > 0) {
+    spec.isProxyEndpoints = true;
   }
   return spec;
 }

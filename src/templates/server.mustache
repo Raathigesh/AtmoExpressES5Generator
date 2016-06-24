@@ -5,32 +5,51 @@ var server = http.createServer(app);
 {{#isSocketEndpointAvailable}}
 var io = require('socket.io')(server);
 {{/isSocketEndpointAvailable}}
+{{#isProxyEndpoints}}
+var proxy = require('express-http-proxy');
+{{/isProxyEndpoints}}
 var port = 5555;
 
 app.get('/status', function internalStaus(req, res){
-	res.send('API server running.');
+  res.send('API server running.');
 });
 
 {{#endpoints}}
 app.{{httpMethod}}('{{{url}}}', function(req, res){
-     {{#headers}}
-      res.set('{{key}}', '{{value}}');
-     {{/headers}}
-      res.set('Content-Type', '{{{response.contentType.contentType}}}');
-      res.status({{response.responseCode}});
-      res.send('{{{response.content}}}');
+  {{#headers}}
+  res.set('{{key}}', '{{value}}');
+  {{/headers}}
+  res.set('Content-Type', '{{{response.contentType.contentType}}}');
+  res.status({{response.responseCode}});
+  res.send('{{{response.content}}}');
 });
 {{/endpoints}}
 
 {{#isSocketEndpointAvailable}}
 io.on('connection', function(socket) {
 {{#socketEndpoints}}
-	socket.on('{{eventName}}', function(data) {    
-        socket.emit('{{eventToEmit}}', {{{payload}}});
-    });
+  socket.on('{{eventName}}', function(data) {
+    {{#isEmitSelf}}
+    io.to(socket.id).emit('{{eventToEmit}}', {{{payload}}});
+    {{/isEmitSelf}}
+    {{#isEmitAll}}
+    io.sockets.emit('{{eventToEmit}}', {{{payload}}});
+    {{/isEmitAll}}
+    {{#isEmitBroadcast}}
+    socket.broadcast.emit('{{eventToEmit}}', {{{payload}}});
+    {{/isEmitBroadcast}}
+  });
 {{/socketEndpoints}}
 });
 {{/isSocketEndpointAvailable}}
+
+{{#proxyEndpoints}}
+app.use('{{{url}}}', proxy('{{{urlToProxy}}}', {
+  forwardPath: function(req, res) {
+    return require('url').parse(req.url).path;
+  }
+}));
+{{/proxyEndpoints}}
 
 server.listen(port, function () {
     console.log('API is available at: http://localhost:' + port);
