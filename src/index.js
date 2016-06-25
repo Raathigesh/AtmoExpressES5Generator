@@ -1,7 +1,7 @@
 var fs = require('fs');
 var Mustache = require('mustache');
 var path = require('path');
-var projectDirectory = path.join(process.cwd(), 'build');
+var projectDirectory = path.join(process.cwd(), 'project');
 
 /**
  * Generates the project files

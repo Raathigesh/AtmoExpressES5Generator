@@ -1,6 +1,6 @@
 {
   "name": "atmo-gen-expressjs-es5",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "ES5 based express js generator for Atmo",
   "main": "./src/index.js",
   "scripts": {
