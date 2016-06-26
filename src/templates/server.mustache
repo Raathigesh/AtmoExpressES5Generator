@@ -19,7 +19,7 @@ app.{{httpMethod}}('{{{url}}}', function(req, res){
   {{#headers}}
   res.set('{{key}}', '{{value}}');
   {{/headers}}
-  res.set('Content-Type', {{{response.contentType.contentType}}});
+  res.set('Content-Type', '{{{response.contentType.contentType}}}');
   res.status({{response.responseCode}});
   res.send('{{{response.content}}}');
 });

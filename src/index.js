@@ -31,6 +31,7 @@ function createProjectDirectory(content) {
 function addHttpEndpointNames(spec) {
   for(var i = 0; i < spec.endpoints.length; i++) {
     var endpoint = spec.endpoints[i];
+    endpoint.response.content = endpoint.response.content.replace(/(\r\n|\n|\r)/gm,"");    
     endpoint.httpMethod = endpoint.method.toLowerCase();
   }
   return spec;
@@ -56,6 +57,7 @@ function addSocketEmitTypeFlag(spec) {
     endpoint.isEmitSelf = endpoint.emitType === "self";
     endpoint.isEmitAll = endpoint.emitType === "all";
     endpoint.isEmitBroadcast = endpoint.emitType === "broadcast";
+    endpoint.payload = endpoint.payload.replace(/(\r\n|\n|\r)/gm,"");
   }
   return spec;
 }
