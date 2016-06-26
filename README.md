@@ -12,6 +12,7 @@ Generators should be installed from the Atmo UI. Enter '`atmo-gen-expressjs-es5`
 ## Supported features
 - Code generation for Http endpoints
 - Code generation for Socket endpoints
+- Code generation for Proxy endpoints
 
 ## License
 MIT © [Raathigeshan](https://twitter.com/Raathigeshan)
