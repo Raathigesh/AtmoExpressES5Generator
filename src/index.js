@@ -31,7 +31,12 @@ function createProjectDirectory(content) {
 function addHttpEndpointNames(spec) {
   for(var i = 0; i < spec.endpoints.length; i++) {
     var endpoint = spec.endpoints[i];
-    endpoint.response.content = endpoint.response.content.replace(/(\r\n|\n|\r)/gm,"");    
+    if (endpoint.response.contentType.contentType.toLowerCase() === 'javascript') {
+      endpoint.response.contentType.contentType = 'application/json';
+      endpoint.response.contentType.eval = true;
+    } else {
+      endpoint.response.content = endpoint.response.content.replace(/(\r\n|\n|\r)/gm,"");
+    }
     endpoint.httpMethod = endpoint.method.toLowerCase();
   }
   return spec;

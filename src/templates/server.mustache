@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var app = express();
 var http = require('http');
 var server = http.createServer(app);
@@ -14,6 +15,16 @@ app.get('/status', function internalStaus(req, res){
   res.send('API server running.');
 });
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.options("/*", function(req, res, next){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.send(200);
+});
+
 {{#endpoints}}
 app.{{httpMethod}}('{{{url}}}', function(req, res){
   {{#headers}}
@@ -21,7 +32,12 @@ app.{{httpMethod}}('{{{url}}}', function(req, res){
   {{/headers}}
   res.set('Content-Type', '{{{response.contentType.contentType}}}');
   res.status({{response.responseCode}});
+  {{#response.contentType.eval}}
+  {{{response.content}}}
+  {{/response.contentType.eval}}
+  {{^response.contentType.eval}}
   res.send('{{{response.content}}}');
+  {{/response.contentType.eval}}
 });
 {{/endpoints}}
 
